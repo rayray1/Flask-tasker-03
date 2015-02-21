@@ -36,7 +36,8 @@ def logout():
     session.pop('logged_in', None)
     session.pop('user_id', None)
     session.pop('role', None)
-    flash('You are logged out. Bye. :(')
+    session.pop('name', None)
+    flash('You are logged out.')
     return redirect(url_for('login'))
 
 
@@ -62,6 +63,7 @@ def login():
                 session['logged_in'] = True
                 session['user_id'] = u.id
                 session['role'] = u.role
+                session['name'] = u.name
                 flash('You are logged in. Go Crazy.')
                 return redirect(url_for('tasks'))
         else:
@@ -88,7 +90,8 @@ def tasks():
         'tasks.html',
         form=AddTaskForm(request.form),
         open_tasks=open_tasks,
-        closed_tasks=closed_tasks
+        closed_tasks=closed_tasks,
+        username=session['name'] # pass in the username to the template
     )
 
 
